@@ -4,8 +4,10 @@ import glob
 import os
 import sys
 import pickle
+import numpy as np
 
 from common import audio_preprocessing as audioproc
+import generate_labels as labelgen
 
 
 class SoundFileMapPair:
@@ -17,14 +19,13 @@ class SoundFileMapPair:
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
-        print("use: main.py data_path output_path")
+        print("use: main.py data_path output_file_path")
         sys.exit()
 
     search_path = sys.argv[1]
     output_path = sys.argv[2]
 
     hard_search = glob.glob(search_path + '/**/Hard.json', recursive=True)
-    print('Hard search:', hard_search)
 
     map_sound_pairs = []
     for hard_json_file in hard_search:
@@ -43,15 +44,19 @@ if __name__ == "__main__":
                   'contained more than one OGG file. Skipping.', file=sys.stderr)
     # print('File pairs:', map_sound_pairs)
 
+    training_set = []
     for i, pair in enumerate(map_sound_pairs):
         data = audioproc.preprocess_file(pair.audio_fpath, 46)
+        label = labelgen.generate_onset_map(pair.map_fpath, pair.audio_fpath)
 
-        # pickling!
-        davids_special_pickle_jar = open(
-            output_path + pair.numbered_dir + "_data.pickle", "wb")
-        pickle.dump(data, davids_special_pickle_jar)
-        davids_special_pickle_jar.close()
+        if len(label) > 0:
+            training_set.append((data, label))
+            progress = '(' + str(i+1) + "/" + str(len(map_sound_pairs)) + ")"
+            print('Processed data for', pair.audio_fpath, progress)
+        else:
+            print("error labeling data")
 
-        print('Processed data for', pair.audio_fpath,
-              '(' + str(i+1) + "/" + str(len(map_sound_pairs)) + ")")
-        # print(data)
+    # pickling!
+    davids_special_pickle_jar = open(output_path, "wb")
+    pickle.dump(np.array(training_set), davids_special_pickle_jar)
+    davids_special_pickle_jar.close()
