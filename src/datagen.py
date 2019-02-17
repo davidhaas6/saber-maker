@@ -7,7 +7,7 @@ import pickle
 import numpy as np
 
 from common import audio_preprocessing as audioproc
-import generate_labels as labelgen
+from common import generate_labels as labelgen
 
 
 class SoundFileMapPair:
@@ -44,19 +44,28 @@ if __name__ == "__main__":
                   'contained more than one OGG file. Skipping.', file=sys.stderr)
     # print('File pairs:', map_sound_pairs)
 
-    training_set = []
-    for i, pair in enumerate(map_sound_pairs):
+    num_songs = 20
+    cnt = 0
+    data_list = []
+    label_list = []
+    for pair in map_sound_pairs:
         data = audioproc.preprocess_file(pair.audio_fpath, 46)
         label = labelgen.generate_onset_map(pair.map_fpath, pair.audio_fpath)
 
         if len(label) > 0:
-            training_set.append((data, label))
-            progress = '(' + str(i+1) + "/" + str(len(map_sound_pairs)) + ")"
+            data_list.append(data)
+            label_list.append(label)
+
+            cnt += 1
+            progress = '(' + str(cnt) + "/" + str(num_songs) + ")"
             print('Processed data for', pair.audio_fpath, progress)
+            if cnt == num_songs:
+                break
         else:
             print("error labeling data")
 
     # pickling!
     davids_special_pickle_jar = open(output_path, "wb")
-    pickle.dump(np.array(training_set), davids_special_pickle_jar)
+    pickle.dump((data_list, label_list),
+                davids_special_pickle_jar)
     davids_special_pickle_jar.close()
