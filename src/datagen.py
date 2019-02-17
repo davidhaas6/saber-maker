@@ -17,13 +17,7 @@ class SoundFileMapPair:
         self.numbered_dir = numbered_dir
 
 
-if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("use: main.py data_path output_file_path")
-        sys.exit()
-
-    search_path = sys.argv[1]
-    output_path = sys.argv[2]
+def generate_data(search_path, output_path):
 
     hard_search = glob.glob(search_path + '/**/Hard.json', recursive=True)
 
@@ -69,3 +63,13 @@ if __name__ == "__main__":
     pickle.dump((data_list, label_list),
                 davids_special_pickle_jar)
     davids_special_pickle_jar.close()
+
+
+if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        print("use: main.py data_path output_file_path")
+        sys.exit()
+
+    search_path = sys.argv[1]
+    output_path = sys.argv[2]
+    generate_data(search_path, output_path)
