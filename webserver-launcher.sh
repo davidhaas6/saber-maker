@@ -15,4 +15,4 @@ CREATEDB
 psql postgres://postgres:"$POSTGRES_USER_PASSWORD"@"$POSTGRES_HOST":5432/sm -f sql/0000-init.sql
 
 # run the webserver
-src/webserver.py 80 0.0.0.0
+daemon src/webserver.py 80 0.0.0.0
