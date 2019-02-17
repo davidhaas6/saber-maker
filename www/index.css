@@ -8,6 +8,7 @@ body {
 div.main-card {
     background-color: #2c313c;
     color: white;
+    text-align: center;
     height: 50vh;
     width: 50vw;
 
@@ -21,4 +22,25 @@ div.main-card {
 	right: 0;
 	
 	margin: auto;
+}
+
+div.form-wrapper {
+	position: absolute;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	
+	margin: auto;
+}
+
+form {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+input {
+    font-size: 20px;
 }
