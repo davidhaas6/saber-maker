@@ -3,3 +3,5 @@ numpy==1.16.1
 madmom==0.15.1
 Flask
 tinytag
+google-cloud-storage
+psycopg2
