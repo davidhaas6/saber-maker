@@ -1,18 +1,21 @@
 body {
-    background: url(jukebox.jpg) no-repeat center center fixed;
-    background-size: cover;
+    /*background: url(dark.png) no-repeat center center fixed;*/
+    background-size: contain;
+	background-color: #000;
     /* height: 100%;
     width: 100%; */
+
+	margin: 0;
 }
 
 div.main-card {
-    background-color: #2c313c;
+    background: 0;
     color: white;
     height: 50vh;
     width: 50vw;
 
-    border: 25px solid #2c313c;
-    border-radius: 25px;
+    border: 0px solid #2c313c;
+    border-radius: 0;
     
 	position: absolute;
 	top:0;
@@ -21,4 +24,25 @@ div.main-card {
 	right: 0;
 	
 	margin: auto;
+}
+
+#logo{
+	color: white;
+	position: absolute;
+	left: 20%;
+	bottom: 0%;
+}
+
+#logo-image{
+	width: 75%;
+}
+
+#instruction{
+	color: white;
+	z-index: 1;
+	position: absolute;
+	left: 31%;
+	bottom: 10%;
+	font-family: monospace;
+	font-size: 4vh;
 }
