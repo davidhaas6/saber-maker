@@ -13,6 +13,7 @@ from keras.layers import Dense, Conv2D, Flatten, MaxPooling2D, Dropout
 import argparse
 import sys
 import glob
+import cloud_datagen
 
 
 epochs = 20
@@ -35,12 +36,15 @@ def train_model(data_file='data/train.pkl', job_dir='./tmp/mnist_mlp', **args):
             labels[i] = np.concatenate(
                 (labels[i], np.zeros(diff, dtype=np.bool)))
 
+    training_cutoff = int(len(data) * .8)
     # Concatenate each song's data into a continuous list
-    train_data = np.concatenate(data[:15]).swapaxes(1, 3)
-    test_data = np.concatenate(data[15:]).swapaxes(1, 3)
+    train_data = np.concatenate(data[:training_cutoff]).swapaxes(1, 3)
+    test_data = np.concatenate(data[training_cutoff:]).swapaxes(1, 3)
 
-    train_labels = np.concatenate(labels[:15]).astype(np.short, copy=False)
-    test_labels = np.concatenate(labels[15:]).astype(np.short, copy=False)
+    train_labels = np.concatenate(
+        labels[:training_cutoff]).astype(np.short, copy=False)
+    test_labels = np.concatenate(
+        labels[training_cutoff:]).astype(np.short, copy=False)
 
     from keras.models import Sequential
     from keras.layers import Dense, Conv2D, Flatten, MaxPooling2D, Dropout
