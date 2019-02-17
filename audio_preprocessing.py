@@ -31,7 +31,7 @@ def mono_signal_processor(frame_time_ms):
     return madmom.processors.SequentialProcessor([signal_reader, fourier_frame_builder, stft, mel_filter, context_builder])
 
 '''
-The main entrypoint for this module. Returns a 3D matrix of the form [time x frames x mel-log]
+The main entrypoint for this module. Returns a 4D matrix of the form [time x frames x mel-log]
 '''
 def preprocess_file(audio_fpath, *frame_sizes):
     outputs = []
@@ -39,7 +39,7 @@ def preprocess_file(audio_fpath, *frame_sizes):
         pipeline = mono_signal_processor(frame_sizes[i])
         output = pipeline(audio_fpath)
         outputs.append(output)
-    # this pipelining process builds a 3D matrix of the form [frames x time x mel-log]
+    # this pipelining process builds a 4D matrix of the form [frames x time x mel-log]
     # transpose the first two dimensions so that we have [time x frames x mel-log]
     return np.transpose(outputs, [1, 0, 2, 3])
 
