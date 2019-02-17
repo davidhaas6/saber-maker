@@ -17,4 +17,4 @@ def static_index():
     return flask.send_file('www/index.html')
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=8080)

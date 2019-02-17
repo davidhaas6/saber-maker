@@ -5,7 +5,7 @@ import os
 import sys
 import pickle
 
-import audio_preprocessing as audioproc
+from common import audio_preprocessing as audioproc
 
 
 class SoundFileMapPair:
