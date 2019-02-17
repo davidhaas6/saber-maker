@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <head>
     <title>Saber Maker</title>
-	<link rel="stylesheet" type="text/css" href="index.css">
-	<script src="jquery-3.3.1.min.js"></script>
-	<script src="bgfx.js"></script>
+    <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 <body>
-	<div id="instruction">
-		Drag&Drop a file to get started
-	</div>
-	<div id="logo">
-			<img id = "logo-image" src = 'clear.png' />
-	</div>
-	<canvas id="c"></canvas>
+    <div class="main-card">
+        <!-- <div class="form-wrapper"> -->
+            <form action="/upload" method="post">
+                <input type="file" name="myname" id="myid">
+                <input type="submit" value="Submit">
+            </form>
+        <!-- </div> -->
+    </div>
 </body>
