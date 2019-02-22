@@ -1,0 +1,8 @@
+trainingInput:
+  scaleTier: CUSTOM
+  # standard_gpu provides 1 GPU. Change to complex_model_m_gpu for 4 GPUs
+  masterType: complex_model_l_v100
+  runtimeVersion: '1.12'
+  
+
+# https://cloud.google.com/ml-engine/docs/tensorflow/training-jobs

@@ -3,9 +3,9 @@
 # David Haas, Ian Boll, Josh Mosier, Michael Keays
 
 import numpy as np
-import matplotlib.pyplot as plt
 import h5py  # for saving the model
 from tensorflow.python.lib.io import file_io  # for better file I/O
+import tensorflow as tf
 from datetime import datetime
 import pickle
 from keras.models import Sequential
@@ -13,20 +13,21 @@ from keras.layers import Dense, Conv2D, Flatten, MaxPooling2D, Dropout
 import argparse
 import sys
 import glob
-import cloud_datagen
+#import cloud_datagen
 
 
 epochs = 20
 
 
-def train_model(data_file='data/train.pkl', job_dir='./tmp/mnist_mlp', **args):
+def train_model(data_file='data/train120.pkl', job_dir='./tmp/onset_detect', **args):
+    print(data_file, job_dir)
     # set the logging path for ML Engine logging to Storage bucket
     logs_path = job_dir + '/logs/' + datetime.now().isoformat()
     print('Using logs_path located at {}'.format(logs_path))
 
-    opened = pickle.load(open(data_file, "rb"))
-
-    data, labels = opened
+    f = tf.gfile.Open(data_file, mode="rb")
+    data, labels = pickle.load(f)
+    print("loaded")
 
     # Normalize the lengths of the data and labels for each song
     for i, ian in enumerate(zip(data, labels)):
@@ -35,6 +36,7 @@ def train_model(data_file='data/train.pkl', job_dir='./tmp/mnist_mlp', **args):
             diff = d.shape[0] - l.shape[0]
             labels[i] = np.concatenate(
                 (labels[i], np.zeros(diff, dtype=np.bool)))
+    print("normalized")
 
     training_cutoff = int(len(data) * .8)
     # Concatenate each song's data into a continuous list
@@ -46,8 +48,12 @@ def train_model(data_file='data/train.pkl', job_dir='./tmp/mnist_mlp', **args):
     test_labels = np.concatenate(
         labels[training_cutoff:]).astype(np.short, copy=False)
 
+    print("Data set.")
+
     from keras.models import Sequential
     from keras.layers import Dense, Conv2D, Flatten, MaxPooling2D, Dropout
+
+    print("keras imported")
 
     # create model
     model = Sequential()
@@ -64,9 +70,13 @@ def train_model(data_file='data/train.pkl', job_dir='./tmp/mnist_mlp', **args):
     model.add(Dense(1, activation='sigmoid'))
     model.add(Dropout(0.5))
 
+    print("model created")
+
     model.compile(optimizer='adam',
                   loss='binary_crossentropy', metrics=['accuracy'])
     model.summary()
+
+    print("model compiled")
 
     model.fit(train_data, train_labels,
               validation_data=(test_data, test_labels),
@@ -83,18 +93,27 @@ def train_model(data_file='data/train.pkl', job_dir='./tmp/mnist_mlp', **args):
 
 
 if __name__ == '__main__':
-    # Parse the input arguments for common Cloud ML Engine options
-    if len(glob.glob('data/*.pkl')) == 0:
-
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        '--train-file',
+        '--data-file',
         help='Cloud Storage bucket or local path to training data')
     parser.add_argument(
         '--job-dir',
         help='Cloud storage bucket to export the model and store temp files')
     args = parser.parse_args()
     arguments = args.__dict__
+
+    # Parse the input arguments for common Cloud ML Engine options
+    # if len(glob.glob('data/*.pkl')) == 0:
+    #     job_dir = arguments['job_dir']
+    #     if job_dir is None:
+    #         job_dir = ''
+    #     cloud_datagen.generate_data(
+    #         'data/RawSongs/', 'data/train.pkl')
+
+    # print(arguments)
+    # train_model(**arguments)
+    print(arguments)
     train_model(**arguments)
 
 

@@ -6,8 +6,8 @@ import sys
 import pickle
 import numpy as np
 
-from common import audio_preprocessing as audioproc
-from common import generate_labels as labelgen
+import audio_preprocessing as audioproc
+import generate_labels as labelgen
 
 
 class SoundFileMapPair:
@@ -38,7 +38,7 @@ def generate_data(search_path, output_path):
                   'contained more than one OGG file. Skipping.', file=sys.stderr)
     # print('File pairs:', map_sound_pairs)
 
-    num_songs = 20
+    num_songs = 150
     cnt = 0
     data_list = []
     label_list = []
