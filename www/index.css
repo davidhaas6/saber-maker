@@ -1,21 +1,19 @@
 body {
-    /*background: url(dark.png) no-repeat center center fixed;*/
-    background-size: contain;
-	background-color: #000;
+    background: url(jukebox.jpg) no-repeat center center fixed;
+    background-size: cover;
     /* height: 100%;
     width: 100%; */
-
-	margin: 0;
 }
 
 div.main-card {
-    background: 0;
+    background-color: #2c313c;
     color: white;
+    text-align: center;
     height: 50vh;
     width: 50vw;
 
-    border: 0px solid #2c313c;
-    border-radius: 0;
+    border: 25px solid #2c313c;
+    border-radius: 25px;
     
 	position: absolute;
 	top:0;
@@ -26,23 +24,23 @@ div.main-card {
 	margin: auto;
 }
 
-#logo{
-	color: white;
+div.form-wrapper {
 	position: absolute;
-	left: 20%;
-	bottom: 0%;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	
+	margin: auto;
 }
 
-#logo-image{
-	width: 75%;
+form {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
 
-#instruction{
-	color: white;
-	z-index: 1;
-	position: absolute;
-	left: 31%;
-	bottom: 10%;
-	font-family: monospace;
-	font-size: 4vh;
+input {
+    font-size: 20px;
 }
