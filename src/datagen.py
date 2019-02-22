@@ -38,7 +38,7 @@ def generate_data(search_path, output_path):
                   'contained more than one OGG file. Skipping.', file=sys.stderr)
     # print('File pairs:', map_sound_pairs)
 
-    num_songs = 20
+    num_songs = 120
     cnt = 0
     data_list = []
     label_list = []
