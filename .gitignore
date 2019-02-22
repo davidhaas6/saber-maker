@@ -1,6 +1,6 @@
 __pycache__
 *.DS_Store
-../.ipynb_checkpoints/
+.ipynb_checkpoints
 cloud/data/
 
 private
