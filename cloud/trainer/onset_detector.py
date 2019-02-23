@@ -16,10 +16,7 @@ import glob
 #import cloud_datagen
 
 
-epochs = 20
-
-
-def train_model(data_file='data/train120.pkl', job_dir='./tmp/onset_detect', **args):
+def train_model(data_file='data/train120.pkl', job_dir='./tmp/onset_detect', epochs=10, **args):
     print(data_file, job_dir)
     # set the logging path for ML Engine logging to Storage bucket
     logs_path = job_dir + '/logs/' + datetime.now().isoformat()
@@ -100,6 +97,9 @@ if __name__ == '__main__':
     parser.add_argument(
         '--job-dir',
         help='Cloud storage bucket to export the model and store temp files')
+    parser.add_argument(
+        '--epochs',
+        help='Number of epochs to train the file over')
     args = parser.parse_args()
     arguments = args.__dict__
 
