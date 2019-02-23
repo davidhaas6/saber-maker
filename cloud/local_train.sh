@@ -15,16 +15,10 @@ JOB_NAME=train_${MODEL_NAME}_${TIER}_${CURRENT_DATE}
 JOB_DIR=gs://$BUCKET_NAME/$JOB_NAME
 #JOB_NAME=tune_${MODEL_NAME}_${CURRENT_DATE} # for hyper-parameter tuning jobs
 
-gcloud ml-engine jobs submit training ${JOB_NAME} \
-        --job-dir=${MODEL_DIR} \
-        --runtime-version=1.12 \
-        --region=${REGION} \
-        --scale-tier=${TIER} \
-        --module-name=trainer.onset_detector \
-        --package-path=${PACKAGE_PATH}  \
-        --pythonVersion: '3.5' \
-        --config=config.yaml \
+gcloud ml-engine local train \
+        --job-dir ${MODEL_DIR} \
+        --module-name trainer.onset_detector \
+        --package-path ${PACKAGE_PATH} \
         -- \
-        --data-files=${TRAIN_FILES} \
-        --job-dir=${JOB_DIR} \
-        --epochs=10
+        --data-file ./data/train120.pkl
+        --epochs 1
