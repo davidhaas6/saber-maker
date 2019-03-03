@@ -21,7 +21,8 @@ Builds a functor that accepts a filepath and returns the preprocessed data
 
 
 def mono_signal_processor(frame_time_ms):
-    frame_size = int(SAMPLE_RATE_HZ / (1000 / frame_time_ms))
+    # how many samples are in one window
+    frame_size = int(SAMPLE_RATE_HZ * (frame_time_ms/1000))
     signal_reader = madmom.audio.signal.SignalProcessor(
         num_channels=1, sample_rate=SAMPLE_RATE_HZ)
     fourier_frame_builder = madmom.audio.signal.FramedSignalProcessor(
@@ -33,6 +34,8 @@ def mono_signal_processor(frame_time_ms):
     # I don't understand the what/why it's there, so I left it out for now
 
     # frame into 150ms chunks
+    # TODO: hop_size probably shouldn't be 1 sample. Consider it being 10ms worth of samples?
+    hop_size_10ms = int(SAMPLE_RATE_HZ * (1 / FRAMES_PER_SECOND))
     context_builder = madmom.audio.signal.FramedSignalProcessor(
         frame_size=CONTEXT_TIME_MS/STEP_SIZE, hop_size=1)
 
@@ -60,7 +63,7 @@ if __name__ == '__main__':
     # frame_sizes = [23, 46, 93]
     # only use the one frame size since processing takes so long
     frame_sizes = [46]
-    audio_fpath = 'examples/audio/haraiya.ogg'
+    audio_fpath = '../../examples/audio/haraiya.ogg'
     figure = pyplot.figure(figsize=(len(frame_sizes), 1))
 
     # this is basically the main entrypoint of the module
